@@ -1,6 +1,9 @@
 package net.kettle.kettlehelmetsmod;
 
 import com.mojang.logging.LogUtils;
+import net.kettle.kettlehelmetsmod.item.ModItems;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -27,6 +30,8 @@ public class KettleMod
     {
         IEventBus modEventBus = context.getModEventBus();
 
+        ModItems.register(modEventBus);
+
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
@@ -45,7 +50,11 @@ public class KettleMod
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event)
     {
-
+        if(event.getTabKey() == CreativeModeTabs.COMBAT) { //only if the tab is "Combat"
+            event.accept(ModItems.GUN); //add our basic item ("GUN")
+            //add bullets
+            event.accept(ModItems.BULLET);
+        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
